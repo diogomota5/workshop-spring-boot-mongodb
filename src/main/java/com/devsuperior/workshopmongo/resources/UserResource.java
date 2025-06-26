@@ -13,18 +13,24 @@ import com.devsuperior.workshopmongo.domain.User;
 import com.devsuperior.workshopmongo.dto.UserDTO;
 import com.devsuperior.workshopmongo.services.UserService;
 
-@RestController //Controlador Rest
+@RestController // Controlador Rest
 @RequestMapping(value = "/users")
 public class UserResource {
 
 	@Autowired // Acesso ao serviço
 	private UserService service;
-	
+
 	@GetMapping
-	public ResponseEntity<List <UserDTO>> findAll() {
+	public ResponseEntity<List<UserDTO>> findAll() {
 		List<User> list = service.findAll();
 		List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
-	
+
+	@GetMapping("/(id)")
+	public ResponseEntity<UserDTO> findById(String id) {
+		User obj = service.findById(id);
+		return ResponseEntity.ok().body(new UserDTO(obj));
+	}
+
 }
